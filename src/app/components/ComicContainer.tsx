@@ -22,7 +22,7 @@ function ComicContainer({ comic, ...divProps }: ComicContainerProps) {
     >
       <span
         style={{ opacity: showDate ? "100" : "0" }}
-        className="transition duration-300 absolute flex items-center justify-center w-full h-full select-none backdrop-filter backdrop-blur-sm"
+        className="transition bg-white/10 duration-300 absolute flex items-center justify-center w-full h-full select-none backdrop-filter backdrop-blur-sm text-black"
       >
         <p>{comic.date}</p>
       </span>

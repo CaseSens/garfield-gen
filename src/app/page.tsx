@@ -7,25 +7,30 @@ import OptionsSection from "./components/OptionsSection";
 
 export default function Home() {
   const { comicData } = useComics();
-  const [randomComic, setRandomComic] = useState<Comic | undefined>(undefined);
-  const [imageUrl, setImageUrl] = useState("");
+  const [numComics, setNumComics] = useState(10);
+  const [selectedYears, setSelectedYears] = useState<string[]>([]);
+  const [randomComics, setRandomComics] = useState<Comic[] | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (comicData.length !== 0) {
-      const randCom = getRandomComic(comicData);
-      setRandomComic(randCom);
+      const randCom = getRandomComics(comicData, numComics, selectedYears);
+      setRandomComics(randCom);
     }
   }, [comicData]);
 
-  useEffect(() => {
-    if (randomComic) {
-      setImageUrl(randomComic.imageUrl);
-    }
-  }, [randomComic]);
+  const onRandomizeClick = () => {
+    setRandomComics(getRandomComics(comicData, numComics, selectedYears));
+  };
 
-  const handleRandomizeClick = () => {
-    setRandomComic(getRandomComic(comicData));
-  }
+  const onNumComicsChange = (num: number) => {
+    setNumComics(num);
+  };
+
+  const onSelectedYearsChange = (years: string[]) => {
+    setSelectedYears(years);
+  };
 
   return (
     <main className="w-full h-full flex flex-col items-center overflow-auto">
@@ -33,13 +38,18 @@ export default function Home() {
         Welcome to the garfield comics library!
       </header>
       <div className="grid grid-rows-page-grid-rows xl:grid-cols-3 w-full h-full">
-        <OptionsSection onRandomizeClick={handleRandomizeClick} />
+        <OptionsSection
+          onRandomizeClick={onRandomizeClick}
+          onNumComicsChanged={onNumComicsChange}
+          onSelectedYearsChanged={onSelectedYearsChange}
+        />
 
         {/* Assuming ComicContainer is a flex item and adapts based on its content */}
         <section className="w-full flex flex-col gap-4 justify-start items-center p-4">
-          {randomComic && (
-            <ComicContainer comic={randomComic} className="relative" />
-          )}
+          {randomComics &&
+            randomComics.map((comic, index) => (
+              <ComicContainer key={index} comic={comic} className="relative" />
+            ))}
         </section>
 
         <section className="flex justify-center pointer-events-none">
@@ -69,14 +79,38 @@ export default function Home() {
   );
 }
 
-function getRandomComic(comicData: ComicsByYear[]) {
-  const comicsByRandYear = comicData[randomInRange(0, comicData.length - 1)];
-  const randCom =
-    comicsByRandYear.comics[
-      randomInRange(0, comicsByRandYear.comics.length - 1)
-    ];
+function getRandomComics(
+  comicData: ComicsByYear[],
+  numComics: number,
+  selectedYears: string[]
+) {
+  let comics: Comic[] = [];
 
-  return randCom;
+  const getRandomComic = () => {
+    const comicsByRandYear = comicData[randomInRange(0, comicData.length - 1)];
+    const randCom =
+      comicsByRandYear.comics[
+        randomInRange(0, comicsByRandYear.comics.length - 1)
+      ];
+
+    return randCom;
+  };
+
+  while (comics.length < numComics) {
+    const comic = getRandomComic();
+    if (!comics.find((c) => c.date === comic.date)) {
+      if (selectedYears.length === 0) {
+        comics.push(comic);
+        continue;
+      }
+      const comicYear = comic.date.split("/")[2];
+      if (selectedYears.find((y) => y === comicYear)) {
+        comics.push(comic);
+      }
+    }
+  }
+
+  return comics;
 }
 
 function randomInRange(min: number, max: number) {

@@ -1,13 +1,18 @@
-'use client';
+"use client";
 
 import Toggle from "react-toggle";
 import "./ToggleButton.css";
 import Select, { StylesConfig, ThemeConfig } from "react-select";
 import makeAnimated from "react-select/animated";
-import { ComponentPropsWithoutRef, useState } from "react";
+import { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import LabeledOption from "./LabeledOption";
 
-const yearOptions = generateArrayFromRange(1978, 2024).map((year) => {
+type YearOption = {
+  value: number,
+  label: number,
+}
+
+const yearOptions: YearOption[] = generateArrayFromRange(1978, 2024).map((year) => {
   return {
     value: year,
     label: year,
@@ -15,43 +20,62 @@ const yearOptions = generateArrayFromRange(1978, 2024).map((year) => {
 });
 
 const animatedComponents = makeAnimated();
-// const selectThemeProp: ThemeConfig = (theme) => ({
-//   ...theme,
-//   colors: {
-//     ...theme.colors,
-//     neutral0: "transparent",
-//     primary25: "#fe7a1b",
-//     neutral5: "#000000",
-//   },
-// });
 const selectThemeProp: StylesConfig = {
   control: (styles) => ({
     ...styles,
-    backgroundColor: "transparent",
+    backgroundColor: "#0B0E14",
     color: "#fe7a1b",
     borderColor: "#fe7a1b",
   }),
   menu: (styles) => ({
     ...styles,
-    backgroundColor: "transparent",
+    backgroundColor: "#0B0E14",
     color: "#fe7a1b",
   }),
 };
 
 interface OptionsSectionProps extends ComponentPropsWithoutRef<"section"> {
   onRandomizeClick: () => void;
+  onNumComicsChanged: (num: number) => void;
+  onSelectedYearsChanged: (years: string[]) => void;
 }
 
-const OptionsSection: React.FC<OptionsSectionProps> = ({ onRandomizeClick }) => {
+const OptionsSection: React.FC<OptionsSectionProps> = ({
+  onRandomizeClick,
+  onNumComicsChanged,
+  onSelectedYearsChanged,
+}) => {
   const [useOptions, setUseOptions] = useState(true);
+  const [numComics, setNumComics] = useState<number>(1);
+  const [selectedYears, setSelectedYears] = useState<string[]>([]);
 
   const toggleOptionsVisibility = () => {
     setUseOptions(!useOptions);
   };
 
+  const handleNumComicsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Check if the input value is numeric
+    if (/^\d*$/.test(value)) {
+      // This regex matches an empty string or a string of digits
+      setNumComics(parseInt(value, 10) || 0); // Convert to number and handle empty string as 0
+    }
+  };
+
+  const handleSelectedYears = (years: YearOption[]) => {
+    setSelectedYears(years.map(year => year.value.toString()));
+  };
+
+  useEffect(() => {
+    onNumComicsChanged(numComics);
+  }, [numComics]);
+
+  useEffect(() => {
+    onSelectedYearsChanged(selectedYears);
+  }, [selectedYears]);
+
   return (
     <section
-      id="options"
       className="flex justify-center overflow-auto min-w-max"
     >
       <div className="max-w-[600px] w-full flex flex-col gap-4 p-4">
@@ -79,15 +103,16 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({ onRandomizeClick }) => 
                 name="Years"
                 className="basic-multi-select"
                 classNamePrefix="select"
-                // theme={selectThemeProp}
                 styles={selectThemeProp}
+                onChange={(newVal) => handleSelectedYears(newVal as YearOption[])}
               />
             </LabeledOption>
             <LabeledOption label={"Number of comics"} onChange={() => {}}>
               <input
                 type="text"
                 className="w-12 bg-transparent border-2 border-orange px-2 rounded-md text-white"
-                defaultValue={1}
+                value={numComics}
+                onChange={handleNumComicsChange}
               />
             </LabeledOption>
             <LabeledOption label={"Generate consecutively"} onChange={() => {}}>
@@ -100,7 +125,10 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({ onRandomizeClick }) => 
             </LabeledOption>
           </div>
         )}
-        <button className="w-full h-10 text-center bg-orange hover:bg-orange/[0.9] rounded-xl leading-none pb-[1px]" onClick={onRandomizeClick}>
+        <button
+          className="w-full h-10 text-center bg-orange hover:bg-orange/[0.9] rounded-xl leading-none pb-[1px]"
+          onClick={onRandomizeClick}
+        >
           Randomize
         </button>
       </div>
