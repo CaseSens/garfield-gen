@@ -7,6 +7,7 @@ import OptionsSection from "./components/OptionsSection";
 
 export default function Home() {
   const { comicData } = useComics();
+  const [useCustomOptions, setUseCustomOptions] = useState(true);
   const [numComics, setNumComics] = useState(10);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
   const [randomComics, setRandomComics] = useState<Comic[] | undefined>(
@@ -15,13 +16,19 @@ export default function Home() {
 
   useEffect(() => {
     if (comicData.length !== 0) {
-      const randCom = getRandomComics(comicData, numComics, selectedYears);
+      const randCom = getRandomComics(comicData, useCustomOptions, numComics, selectedYears);
       setRandomComics(randCom);
     }
   }, [comicData]);
 
+  const onUseCustomOptionsChange = (use: boolean) => {
+    setUseCustomOptions(use);
+  }
+
   const onRandomizeClick = () => {
-    setRandomComics(getRandomComics(comicData, numComics, selectedYears));
+    setRandomComics(
+      getRandomComics(comicData, useCustomOptions, numComics, selectedYears)
+    );
   };
 
   const onNumComicsChange = (num: number) => {
@@ -39,6 +46,7 @@ export default function Home() {
       </header>
       <div className="grid grid-rows-page-grid-rows xl:grid-cols-3 w-full h-full">
         <OptionsSection
+        onUseCustomOptionsChange={onUseCustomOptionsChange}
           onRandomizeClick={onRandomizeClick}
           onNumComicsChanged={onNumComicsChange}
           onSelectedYearsChanged={onSelectedYearsChange}
@@ -81,6 +89,7 @@ export default function Home() {
 
 function getRandomComics(
   comicData: ComicsByYear[],
+  useCustomOptions: boolean,
   numComics: number,
   selectedYears: string[]
 ) {
@@ -96,6 +105,10 @@ function getRandomComics(
     return randCom;
   };
 
+  if (!useCustomOptions) {
+    return [getRandomComic()];
+  }
+
   while (comics.length < numComics) {
     const comic = getRandomComic();
     if (!comics.find((c) => c.date === comic.date)) {
@@ -103,6 +116,7 @@ function getRandomComics(
         comics.push(comic);
         continue;
       }
+
       const comicYear = comic.date.split("/")[2];
       if (selectedYears.find((y) => y === comicYear)) {
         comics.push(comic);

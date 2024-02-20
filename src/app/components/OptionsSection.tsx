@@ -35,12 +35,14 @@ const selectThemeProp: StylesConfig = {
 };
 
 interface OptionsSectionProps extends ComponentPropsWithoutRef<"section"> {
+  onUseCustomOptionsChange: (use: boolean) => void;
   onRandomizeClick: () => void;
   onNumComicsChanged: (num: number) => void;
   onSelectedYearsChanged: (years: string[]) => void;
 }
 
 const OptionsSection: React.FC<OptionsSectionProps> = ({
+  onUseCustomOptionsChange,
   onRandomizeClick,
   onNumComicsChanged,
   onSelectedYearsChanged,
@@ -49,7 +51,9 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
   const [numComics, setNumComics] = useState<number>(1);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
 
-  const toggleOptionsVisibility = () => {
+  const handleUseOptionsChange = () => {
+    const newVal = !useOptions;
+    onUseCustomOptionsChange(newVal);
     setUseOptions(!useOptions);
   };
 
@@ -85,7 +89,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
             defaultChecked={useOptions}
             aria-label="use custom settings?"
             icons={false}
-            onChange={toggleOptionsVisibility}
+            onChange={handleUseOptionsChange}
           />
         </div>
         {useOptions && (
@@ -120,7 +124,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
                 defaultChecked={useOptions}
                 aria-label="use custom settings?"
                 icons={false}
-                onChange={toggleOptionsVisibility}
+                onChange={handleUseOptionsChange}
               />
             </LabeledOption>
           </div>
