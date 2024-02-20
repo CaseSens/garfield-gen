@@ -46,10 +46,10 @@ export default function Home() {
 
   return (
     <main className="w-full h-full flex flex-col items-center overflow-auto">
-      <header className="w-full flex items-center justify-center border-b-2 p-4">
+      <header className="w-full flex items-center justify-center border-b-2 p-4 select-none">
         WELCOME TO THE GARFIELD COMICS ARCHIVE
       </header>
-      <div className="grid grid-rows-page-grid-rows xl:grid-cols-3 w-full h-full">
+      <div className="grid grid-rows-page-grid-rows gap-4 xl:grid-cols-3 xl:grid-rows-none w-full h-full p-4">
         <OptionsSection
           onUseCustomOptionsChange={onUseCustomOptionsChange}
           onRandomizeClick={onRandomizeClick}
@@ -58,15 +58,15 @@ export default function Home() {
         />
 
         {/* Assuming ComicContainer is a flex item and adapts based on its content */}
-        <section className="w-full flex flex-col gap-4 justify-start items-center p-4">
+        <section className="w-full flex flex-col gap-4 justify-start items-center">
           {randomComics &&
             randomComics.map((comic, index) => (
               <ComicContainer key={index} comic={comic} className="relative" />
             ))}
         </section>
 
-        <section className="flex flex-col justify-center pointer-events-none">
-          <p className="py-2 px-8 font-lighter text-sm">
+        <section className="flex flex-col gap-4 justify-start items-center xl:items-start">
+          <p className="font-lighter text-sm max-w-[600px]">
             This website and archive were created to celebrate the legacy of
             Garfield comics and are made possible through the use of the Andrews
             McMeel Publishing Company’s comics archive. The comics depicted on
@@ -86,7 +86,7 @@ export default function Home() {
             this site, please contact me at casey@caseygg.dev, and I will
             address the matter promptly.
           </p>
-          <p className="font-bold py-2 px-8 font-lighter text-sm">
+          <p className="font-bold font-lighter text-sm">
             **currently under construction**
           </p>
         </section>

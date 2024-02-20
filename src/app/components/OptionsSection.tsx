@@ -8,16 +8,18 @@ import { ComponentPropsWithoutRef, useEffect, useState } from "react";
 import LabeledOption from "./LabeledOption";
 
 type YearOption = {
-  value: number,
-  label: number,
-}
+  value: number;
+  label: number;
+};
 
-const yearOptions: YearOption[] = generateArrayFromRange(1978, 2024).map((year) => {
-  return {
-    value: year,
-    label: year,
-  };
-});
+const yearOptions: YearOption[] = generateArrayFromRange(1978, 2024).map(
+  (year) => {
+    return {
+      value: year,
+      label: year,
+    };
+  }
+);
 
 const animatedComponents = makeAnimated();
 const selectThemeProp: StylesConfig = {
@@ -67,7 +69,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
   };
 
   const handleSelectedYears = (years: YearOption[]) => {
-    setSelectedYears(years.map(year => year.value.toString()));
+    setSelectedYears(years.map((year) => year.value.toString()));
   };
 
   useEffect(() => {
@@ -79,11 +81,9 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
   }, [selectedYears]);
 
   return (
-    <section
-      className="flex justify-center overflow-auto min-w-max"
-    >
-      <div className="max-w-[600px] w-full flex flex-col gap-4 p-4">
-        <div className="flex items-center justify-between border-b-2 border-orange pb-2">
+    <section className="flex justify-center overflow-auto min-w-max">
+      <div className="max-w-[600px] w-full h-full flex flex-col gap-4">
+        <span className="flex items-center justify-between border-b-2 border-orange pb-2">
           <p>Use custom settings?</p>
           <Toggle
             defaultChecked={useOptions}
@@ -91,7 +91,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
             icons={false}
             onChange={handleUseOptionsChange}
           />
-        </div>
+        </span>
         {useOptions && (
           <div className="flex flex-col gap-4">
             <LabeledOption
@@ -108,7 +108,10 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
                 className="basic-multi-select"
                 classNamePrefix="select"
                 styles={selectThemeProp}
-                onChange={(newVal) => handleSelectedYears(newVal as YearOption[])}
+                onChange={(newVal) =>
+                  handleSelectedYears(newVal as YearOption[])
+                }
+                maxMenuHeight={200}
               />
             </LabeledOption>
             <LabeledOption label={"Number of comics"} onChange={() => {}}>
