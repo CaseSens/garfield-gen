@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <main className="w-full h-full flex flex-col items-center overflow-auto">
       <header className="w-full flex items-center justify-center border-b-2 p-4">
-        Welcome to the garfield comics library!
+        WELCOME TO THE GARFIELD COMICS ARCHIVE
       </header>
       <div className="grid grid-rows-page-grid-rows xl:grid-cols-3 w-full h-full">
         <OptionsSection
@@ -71,14 +71,14 @@ export default function Home() {
             <br />
             <br />
             This site is intended for personal use and educational purposes
-            only, and not for commercial gain. We acknowledge the copyrights and
+            only, and not for commercial gain. I acknowledge the copyrights and
             trademarks owned by Paws, Inc. and Paramount Global/Nickelodeon
             Group, and affirm that this site has no official affiliation with
             these entities. Our goal is to share the joy and humor of Garfield
             with fans around the world while respecting the rights of the
             copyright and trademark holders. If you are the copyright or
             trademark holder and have concerns about the use of any material on
-            this site, please contact us at [your contact information], and we
+            this site, please contact me at casey@caseygg.dev, and I
             will address the matter promptly.
           </p>
         </section>
