@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${baloo.className} w-dvh h-dvh bg-bg-dark overflow-auto`}
+        className={`${baloo.className} w-dvh h-dvh bg-bg-dark overflow-auto text-text-white`}
       >
         <ComicProvider>{children}</ComicProvider>
       </body>

@@ -22,6 +22,7 @@ const config: Config = {
       colors: {
         "bg-dark": "#0B0E14",
         orange: "#fe7a1b",
+        "text-white": "#E0E4ED",
       },
     },
   },
