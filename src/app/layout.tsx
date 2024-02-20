@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import ComicProvider from "./Providers/ComicsProvider";
 
 const poppins = Poppins({
   weight: "400",
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} w-dvh h-dvh`}>{children}</body>
+      <body className={`${poppins.className} w-dvh h-dvh bg-bg-dark overflow-auto`}>
+        <ComicProvider>{children}</ComicProvider>
+      </body>
     </html>
   );
 }
