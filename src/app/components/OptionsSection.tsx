@@ -121,10 +121,9 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
             </LabeledOption>
             <LabeledOption label={"Generate consecutively"} onChange={() => {}}>
               <Toggle
-                defaultChecked={useOptions}
-                aria-label="use custom settings?"
+                defaultChecked={false}
+                aria-label="generate consecutively?"
                 icons={false}
-                onChange={handleUseOptionsChange}
               />
             </LabeledOption>
           </div>
