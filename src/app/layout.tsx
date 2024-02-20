@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Baloo_Tamma_2 } from "next/font/google";
 import "./globals.css";
 import ComicProvider from "./Providers/ComicsProvider";
 
-const poppins = Poppins({
+const baloo = Baloo_Tamma_2({
   weight: "400",
   subsets: ["latin"],
 });
@@ -20,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} w-dvh h-dvh bg-bg-dark overflow-auto`}>
+      <body
+        className={`${baloo.className} w-dvh h-dvh bg-bg-dark overflow-auto`}
+      >
         <ComicProvider>{children}</ComicProvider>
       </body>
     </html>

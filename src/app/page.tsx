@@ -16,14 +16,19 @@ export default function Home() {
 
   useEffect(() => {
     if (comicData.length !== 0) {
-      const randCom = getRandomComics(comicData, useCustomOptions, numComics, selectedYears);
+      const randCom = getRandomComics(
+        comicData,
+        useCustomOptions,
+        numComics,
+        selectedYears
+      );
       setRandomComics(randCom);
     }
   }, [comicData]);
 
   const onUseCustomOptionsChange = (use: boolean) => {
     setUseCustomOptions(use);
-  }
+  };
 
   const onRandomizeClick = () => {
     setRandomComics(
@@ -46,7 +51,7 @@ export default function Home() {
       </header>
       <div className="grid grid-rows-page-grid-rows xl:grid-cols-3 w-full h-full">
         <OptionsSection
-        onUseCustomOptionsChange={onUseCustomOptionsChange}
+          onUseCustomOptionsChange={onUseCustomOptionsChange}
           onRandomizeClick={onRandomizeClick}
           onNumComicsChanged={onNumComicsChange}
           onSelectedYearsChanged={onSelectedYearsChange}
@@ -60,7 +65,7 @@ export default function Home() {
             ))}
         </section>
 
-        <section className="flex justify-center pointer-events-none">
+        <section className="flex flex-col justify-center pointer-events-none">
           <p className="py-2 px-8 font-lighter text-sm">
             This website and archive were created to celebrate the legacy of
             Garfield comics and are made possible through the use of the Andrews
@@ -78,8 +83,11 @@ export default function Home() {
             with fans around the world while respecting the rights of the
             copyright and trademark holders. If you are the copyright or
             trademark holder and have concerns about the use of any material on
-            this site, please contact me at casey@caseygg.dev, and I
-            will address the matter promptly.
+            this site, please contact me at casey@caseygg.dev, and I will
+            address the matter promptly.
+          </p>
+          <p className="font-bold py-2 px-8 font-lighter text-sm">
+            **currently under construction**
           </p>
         </section>
       </div>
